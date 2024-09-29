@@ -1,0 +1,792 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "bakabit | Ingra Plugin API",
+    "version": "0.2.0",
+    "description": "Ingra Portal helps you curate and manage functions or workflows to create your own personal assistant suite tailored to your needs. Our goal is to make these functions freely available for everyone, enabling a community-driven approach to personal assistant development."
+  },
+  "paths": {
+    "/api/v1/bakabit/functions/addJiraIssueComment": {
+      "post": {
+        "summary": "Add a comment to a specific Jira issue.",
+        "operationId": "addJiraIssueComment",
+        "description": "Add a comment to a specific Jira issue.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "issueIdOrKey": {
+                    "type": "string",
+                    "description": "The ID or key of the Jira issue to add a comment to.",
+                    "default": ""
+                  },
+                  "commentBody": {
+                    "type": "string",
+                    "description": "The content of the comment.",
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "issueIdOrKey",
+                  "commentBody"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bakabit/functions/addProductiveTimeEntry": {
+      "post": {
+        "summary": "Updates an existing time entry in Productive by sending a POST request to the Productive API v2.",
+        "operationId": "addProductiveTimeEntry",
+        "description": "Updates an existing time entry in Productive by sending a POST request to the Productive API v2.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Productive"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "note": {
+                    "type": "string",
+                    "description": "Note of the work done for this time entry",
+                    "default": ""
+                  },
+                  "dateString": {
+                    "type": "string",
+                    "description": "Date of the time entry, in natural language (e.g., 'tomorrow', 'next Friday'). Chrono-node parses it. Default: 'today at 23:59'",
+                    "default": "today"
+                  },
+                  "hours": {
+                    "type": "integer",
+                    "description": "Number of hours logged",
+                    "default": "8"
+                  },
+                  "service_id": {
+                    "type": "string",
+                    "description": " ID of the service associated with the time entry. Leaving it empty will return all available services. Defaults to my service ID.",
+                    "default": "3173137"
+                  },
+                  "person_id": {
+                    "type": "string",
+                    "description": " ID of the user associated with the time entry. Leaving it empty will return all available person. Defaults to my person ID.",
+                    "default": "404947"
+                  }
+                },
+                "required": [
+                  "note",
+                  "dateString",
+                  "hours"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bakabit/functions/assignJiraIssue": {
+      "post": {
+        "summary": "Assigns a Jira issue to a specified assignee. If the assignee is not provided, it returns the available assignees for the issue.",
+        "operationId": "assignJiraIssue",
+        "description": "Assigns a Jira issue to a specified assignee. If the assignee is not provided, it returns the available assignees for the issue.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "issueIdOrKey": {
+                    "type": "string",
+                    "description": "The ID or key of the Jira issue.",
+                    "default": ""
+                  },
+                  "assignee": {
+                    "type": "string",
+                    "description": "The account ID or username of the assignee. If not provided, available assignees will be returned.",
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "issueIdOrKey"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bakabit/functions/commentOnGithubIssue": {
+      "post": {
+        "summary": "Add a comment to an existing issue in a specified GitHub repository.",
+        "operationId": "commentOnGithubIssue",
+        "description": "Add a comment to an existing issue in a specified GitHub repository.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Github Contributor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "repoOwner": {
+                    "type": "string",
+                    "description": "The owner of the repository.",
+                    "default": ""
+                  },
+                  "repoName": {
+                    "type": "string",
+                    "description": "The name of the repository.",
+                    "default": ""
+                  },
+                  "issueNumber": {
+                    "type": "integer",
+                    "description": "The number of the issue to comment on.",
+                    "default": ""
+                  },
+                  "commentBody": {
+                    "type": "string",
+                    "description": "The content of the comment.",
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "repoOwner",
+                  "repoName",
+                  "issueNumber",
+                  "commentBody"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bakabit/functions/createGmailLabelsAndFilters": {
+      "get": {
+        "summary": "Create labels and filters in Gmail",
+        "operationId": "createGmailLabelsAndFilters",
+        "description": "Create labels and filters in Gmail",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Google Mail"
+        ],
+        "parameters": [
+          {
+            "name": "labelsToCreate",
+            "in": "query",
+            "description": "Labels to create",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "filtersToCreate",
+            "in": "query",
+            "description": "Filters to create",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/bakabit/functions/createGoogleDriveFile": {
+      "post": {
+        "summary": "Creates and uploads a file to Google Drive with a specified filename and content using Google OAuth token.",
+        "operationId": "createGoogleDriveFile",
+        "description": "Creates and uploads a file to Google Drive with a specified filename and content using Google OAuth token.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Google Drive",
+          "Create File",
+          "OAuth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileName": {
+                    "type": "string",
+                    "description": "The name of the file to be created.",
+                    "default": "README.txt"
+                  },
+                  "fileContent": {
+                    "type": "string",
+                    "description": "The content to be written into the file.",
+                    "default": "This is a sample content."
+                  }
+                },
+                "required": [
+                  "fileName",
+                  "fileContent"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bakabit/functions/deleteJiraFixVersion": {
+      "delete": {
+        "summary": "Deletes a fix version in Jira by its version ID.",
+        "operationId": "deleteJiraFixVersion",
+        "description": "Deletes a fix version in Jira by its version ID.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira",
+          "FixVersion"
+        ],
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "query",
+            "description": "The ID of the fix version to delete.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/bakabit/functions/deleteJiraIssueComment": {
+      "delete": {
+        "summary": "Delete a specific comment from a Jira issue.",
+        "operationId": "deleteJiraIssueComment",
+        "description": "Delete a specific comment from a Jira issue.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira"
+        ],
+        "parameters": [
+          {
+            "name": "issueIdOrKey",
+            "in": "query",
+            "description": "The ID or key of the Jira issue to delete the comment from.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "query",
+            "description": "The ID of the comment to delete.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/bakabit/functions/deleteJiraSprint": {
+      "delete": {
+        "summary": "Deletes a sprint in Jira by its sprint ID.",
+        "operationId": "deleteJiraSprint",
+        "description": "Deletes a sprint in Jira by its sprint ID.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira",
+          "Sprint"
+        ],
+        "parameters": [
+          {
+            "name": "sprintId",
+            "in": "query",
+            "description": "The ID of the sprint to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "default": ""
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/bakabit/functions/updateJiraIssue": {
+      "put": {
+        "summary": "Update Jira issue details, including custom fields like priority, story points, sprint, etc. Requires `bodyData` argument to be provided.",
+        "operationId": "updateJiraIssue",
+        "description": "Update Jira issue details, including custom fields like priority, story points, sprint, etc. Requires `bodyData` argument to be provided.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "issueIdOrKey": {
+                    "type": "string",
+                    "description": "The ID or key of the Jira issue to update.",
+                    "default": ""
+                  },
+                  "bodyData": {
+                    "type": "string",
+                    "description": "The fields to update in the Jira issue as a JSON string.",
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "issueIdOrKey",
+                  "bodyData"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bakabit/functions/updateJiraIssueComment": {
+      "put": {
+        "summary": "Update an existing comment on a specific Jira issue.",
+        "operationId": "updateJiraIssueComment",
+        "description": "Update an existing comment on a specific Jira issue.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "issueIdOrKey": {
+                    "type": "string",
+                    "description": "The ID or key of the Jira issue to update the comment for.",
+                    "default": ""
+                  },
+                  "commentId": {
+                    "type": "string",
+                    "description": "The ID of the comment to update.",
+                    "default": ""
+                  },
+                  "commentBody": {
+                    "type": "string",
+                    "description": "The updated content of the comment.",
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "issueIdOrKey",
+                  "commentId",
+                  "commentBody"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bakabit/functions/updateJiraSprint": {
+      "put": {
+        "summary": "Updates a sprint in Jira with specified parameters such as sprint ID, name, start date, end date, goal, and state. If sprint ID is not provided, returns a list of available sprints.",
+        "operationId": "updateJiraSprint",
+        "description": "Updates a sprint in Jira with specified parameters such as sprint ID, name, start date, end date, goal, and state. If sprint ID is not provided, returns a list of available sprints.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, such as missing or invalid parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Jira",
+          "Sprint"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sprintId": {
+                    "type": "integer",
+                    "description": "The ID of the sprint to update.",
+                    "default": ""
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The new name of the sprint.",
+                    "default": ""
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "description": "The new start date of the sprint in ISO8601 format.",
+                    "default": ""
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "description": "The new end date of the sprint in ISO8601 format.",
+                    "default": ""
+                  },
+                  "goal": {
+                    "type": "string",
+                    "description": "The new goal of the sprint.",
+                    "default": ""
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "The new state of the sprint (e.g., active, closed).",
+                    "default": ""
+                  }
+                },
+                "required": [
+                  "sprintId"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "An optional error code representing the error type. For example, 400 for Bad Request, 401 for Unauthorized, 403 for Forbidden, 404 for Not Found, 500 for Internal Server Error."
+          },
+          "code": {
+            "type": "string",
+            "nullable": true,
+            "description": "A brief description of the error message."
+          },
+          "message": {
+            "type": "string",
+            "description": "A detailed message describing the error message."
+          }
+        }
+      },
+      "ApiSuccess": {
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "A brief description of the successful operation.",
+            "examples": [
+              "OK"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "description": "A brief message of the successful operation.",
+            "examples": [
+              "Operation successful."
+            ]
+          },
+          "data": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "An arbitrary object returned by the operation."
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "description": "An array of arbitrary objects returned by the operation."
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "security": [],
+  "tags": [],
+  "servers": [
+    {
+      "url": "https://hubs.ingra.ai"
+    }
+  ]
+}

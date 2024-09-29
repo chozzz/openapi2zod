@@ -1,0 +1,325 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "bakabit | Ingra Plugin API",
+    "version": "0.2.0",
+    "description": "Ingra Portal helps you curate and manage functions or workflows to create your own personal assistant suite tailored to your needs. Our goal is to make these functions freely available for everyone, enabling a community-driven approach to personal assistant development."
+  },
+  "paths": {
+    "/api/v1/example/oneOfExample": {
+      "post": {
+        "summary": "An example endpoint using oneOf",
+        "operationId": "oneOfExample",
+        "description": "This endpoint accepts a request body that must conform to one of the specified schemas.",
+        "responses": {
+          "200": {
+            "description": "Successfully processed the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Example"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TypeA"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TypeB"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/v1/example/anyOfExample": {
+      "post": {
+        "summary": "An example endpoint using anyOf",
+        "operationId": "anyOfExample",
+        "description": "This endpoint accepts a request body that can be any combination of the specified schemas.",
+        "responses": {
+          "200": {
+            "description": "Successfully processed the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Example"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/TypeC"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TypeD"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/v1/example/allOfExample": {
+      "post": {
+        "summary": "An example endpoint using allOf",
+        "operationId": "allOfExample",
+        "description": "This endpoint accepts a request body that must conform to all of the specified schemas.",
+        "responses": {
+          "200": {
+            "description": "Successfully processed the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Example"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/BaseType"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "additionalProperty": {
+                        "type": "string",
+                        "description": "An additional property required by this endpoint."
+                      }
+                    },
+                    "required": [
+                      "additionalProperty"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/v1/example/notExample": {
+      "post": {
+        "summary": "An example endpoint using not",
+        "operationId": "notExample",
+        "description": "This endpoint accepts a request body that must not conform to a specified schema.",
+        "responses": {
+          "200": {
+            "description": "Successfully processed the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Example"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "not": {
+                  "$ref": "#/components/schemas/ForbiddenType"
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TypeA": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "A"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ]
+      },
+      "TypeB": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "B"
+            ]
+          },
+          "amount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "amount"
+        ]
+      },
+      "TypeC": {
+        "type": "object",
+        "properties": {
+          "option1": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "option1"
+        ]
+      },
+      "TypeD": {
+        "type": "object",
+        "properties": {
+          "option2": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "option2"
+        ]
+      },
+      "BaseType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the entity"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "ForbiddenType": {
+        "type": "object",
+        "properties": {
+          "forbidden": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "forbidden"
+        ]
+      },
+      "ApiSuccess": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "security": [],
+  "tags": [],
+  "servers": [
+    {
+      "url": "https://hubs.ingra.ai"
+    }
+  ]
+}

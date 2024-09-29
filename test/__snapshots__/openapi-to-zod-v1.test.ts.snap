@@ -1,0 +1,348 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DELETE deleteJiraFixVersion" 1`] = `
+{
+  "$ref": "#/definitions/deleteJiraFixVersion",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "deleteJiraFixVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "versionId": {
+          "description": "The ID of the fix version to delete.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "versionId",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DELETE deleteJiraIssueComment" 1`] = `
+{
+  "$ref": "#/definitions/deleteJiraIssueComment",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "deleteJiraIssueComment": {
+      "additionalProperties": false,
+      "properties": {
+        "commentId": {
+          "description": "The ID of the comment to delete.",
+          "type": "string",
+        },
+        "issueIdOrKey": {
+          "description": "The ID or key of the Jira issue to delete the comment from.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "issueIdOrKey",
+        "commentId",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DELETE deleteJiraSprint" 1`] = `
+{
+  "$ref": "#/definitions/deleteJiraSprint",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "deleteJiraSprint": {
+      "additionalProperties": false,
+      "properties": {
+        "sprintId": {
+          "description": "The ID of the sprint to delete.",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "sprintId",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "GET createGmailLabelsAndFilters" 1`] = `
+{
+  "$ref": "#/definitions/createGmailLabelsAndFilters",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "createGmailLabelsAndFilters": {
+      "additionalProperties": false,
+      "properties": {
+        "filtersToCreate": {
+          "description": "Filters to create",
+          "type": "string",
+        },
+        "labelsToCreate": {
+          "description": "Labels to create",
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PATCH updateJiraIssue" 1`] = `
+{
+  "$ref": "#/definitions/updateJiraIssue",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "updateJiraIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "bodyData": {
+          "description": "The fields to update in the Jira issue as a JSON string.",
+          "type": "string",
+        },
+        "issueIdOrKey": {
+          "description": "The ID or key of the Jira issue to update.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "issueIdOrKey",
+        "bodyData",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PATCH updateJiraIssueComment" 1`] = `
+{
+  "$ref": "#/definitions/updateJiraIssueComment",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "updateJiraIssueComment": {
+      "additionalProperties": false,
+      "properties": {
+        "commentBody": {
+          "description": "The updated content of the comment.",
+          "type": "string",
+        },
+        "commentId": {
+          "description": "The ID of the comment to update.",
+          "type": "string",
+        },
+        "issueIdOrKey": {
+          "description": "The ID or key of the Jira issue to update the comment for.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "issueIdOrKey",
+        "commentId",
+        "commentBody",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PATCH updateJiraSprint" 1`] = `
+{
+  "$ref": "#/definitions/updateJiraSprint",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "updateJiraSprint": {
+      "additionalProperties": false,
+      "properties": {
+        "endDate": {
+          "description": "The new end date of the sprint in ISO8601 format.",
+          "type": "string",
+        },
+        "goal": {
+          "description": "The new goal of the sprint.",
+          "type": "string",
+        },
+        "name": {
+          "description": "The new name of the sprint.",
+          "type": "string",
+        },
+        "sprintId": {
+          "description": "The ID of the sprint to update.",
+          "type": "integer",
+        },
+        "startDate": {
+          "description": "The new start date of the sprint in ISO8601 format.",
+          "type": "string",
+        },
+        "state": {
+          "description": "The new state of the sprint (e.g., active, closed).",
+          "type": "string",
+        },
+      },
+      "required": [
+        "sprintId",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "POST addJiraIssueComment" 1`] = `
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "commentBody": {
+      "description": "The content of the comment.",
+      "type": "string",
+    },
+    "issueIdOrKey": {
+      "description": "The ID or key of the Jira issue to add a comment to.",
+      "type": "string",
+    },
+  },
+  "required": [
+    "issueIdOrKey",
+    "commentBody",
+  ],
+  "type": "object",
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "POST addProductiveTimeEntry" 1`] = `
+{
+  "$ref": "#/definitions/addProductiveTimeEntry",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "addProductiveTimeEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "dateString": {
+          "description": "Date of the time entry, in natural language (e.g., 'tomorrow', 'next Friday'). Chrono-node parses it. Default: 'today at 23:59'",
+          "type": "string",
+        },
+        "hours": {
+          "description": "Number of hours logged",
+          "type": "integer",
+        },
+        "note": {
+          "description": "Note of the work done for this time entry",
+          "type": "string",
+        },
+        "person_id": {
+          "description": " ID of the user associated with the time entry. Leaving it empty will return all available person. Defaults to my person ID.",
+          "type": "string",
+        },
+        "service_id": {
+          "description": " ID of the service associated with the time entry. Leaving it empty will return all available services. Defaults to my service ID.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "note",
+        "dateString",
+        "hours",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "POST assignJiraIssue" 1`] = `
+{
+  "$ref": "#/definitions/assignJiraIssue",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "assignJiraIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "assignee": {
+          "description": "The account ID or username of the assignee. If not provided, available assignees will be returned.",
+          "type": "string",
+        },
+        "issueIdOrKey": {
+          "description": "The ID or key of the Jira issue.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "issueIdOrKey",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "POST commentOnGithubIssue" 1`] = `
+{
+  "$ref": "#/definitions/commentOnGithubIssue",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "commentOnGithubIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "commentBody": {
+          "description": "The content of the comment.",
+          "type": "string",
+        },
+        "issueNumber": {
+          "description": "The number of the issue to comment on.",
+          "type": "integer",
+        },
+        "repoName": {
+          "description": "The name of the repository.",
+          "type": "string",
+        },
+        "repoOwner": {
+          "description": "The owner of the repository.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "repoOwner",
+        "repoName",
+        "issueNumber",
+        "commentBody",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
+
+exports[`parseOpenApiToZod v1 should generate correct schema for operationId "POST createGoogleDriveFile" 1`] = `
+{
+  "$ref": "#/definitions/createGoogleDriveFile",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "createGoogleDriveFile": {
+      "additionalProperties": false,
+      "properties": {
+        "fileContent": {
+          "description": "The content to be written into the file.",
+          "type": "string",
+        },
+        "fileName": {
+          "description": "The name of the file to be created.",
+          "type": "string",
+        },
+      },
+      "required": [
+        "fileName",
+        "fileContent",
+      ],
+      "type": "object",
+    },
+  },
+}
+`;
