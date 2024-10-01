@@ -1,5 +1,5 @@
 {
-  "name": "openapi-to-zod",
+  "name": "@chozzz/openapi-to-zod",
   "version": "0.1.0",
   "description": "A utility library that converts OpenAPI JSON schemas into Zod schemas",
   "keywords": [
