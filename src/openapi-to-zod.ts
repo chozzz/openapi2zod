@@ -103,30 +103,37 @@ export function parseOpenApiToZod(openApiSchema: OpenAPIV3.Document): Record<str
           const flattenedRequestBodySchema = flattenZodType(requestBodySchema)
 
           if (flattenedRequestBodySchema instanceof z.ZodObject) {
-            operationSchema = parametersSchema.merge(flattenedRequestBodySchema)
-          } else if (flattenedRequestBodySchema instanceof z.ZodUnion) {
-            // Handle ZodUnion similar to previous logic
-            const unionOptions = flattenedRequestBodySchema.options
-
-            const mergedOptions = unionOptions.map((option: z.ZodObject<any> | z.ZodAny) => {
-              if (option instanceof z.ZodObject) {
-                return parametersSchema.merge(option)
-              } else {
-                return z.intersection(parametersSchema, option)
-              }
-            })
-
-            if (mergedOptions.length >= 2) {
-              operationSchema = z.union(mergedOptions as [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]])
-            } else if (mergedOptions.length === 1) {
-              operationSchema = mergedOptions[0]
-            } else {
-              operationSchema = parametersSchema
-            }
-          } else {
-            // For other types of requestBodySchema, use z.intersection
-            operationSchema = z.intersection(parametersSchema, flattenedRequestBodySchema)
+            operationSchema = parametersSchema.merge(flattenedRequestBodySchema);
           }
+          else if (flattenedRequestBodySchema instanceof z.ZodUnion) {
+            // Handle ZodUnion by merging parametersSchema with each option in the union
+            const mergedOptions = flattenedRequestBodySchema.options.map((option: z.ZodObject<any> | z.ZodAny) => {
+              // Instead of directly merging, combine the fields using intersection or custom logic
+              return z.intersection(parametersSchema, option);
+            });
+          
+            if (mergedOptions.length >= 2) {
+              operationSchema = z.union(mergedOptions as [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]);
+            } else if (mergedOptions.length === 1) {
+              operationSchema = mergedOptions[0];
+            } else {
+              operationSchema = parametersSchema;
+            }
+          }
+          
+          else {
+            // For other types of requestBodySchema, use z.intersection
+            operationSchema = z.intersection(parametersSchema, flattenedRequestBodySchema);
+          }
+
+          // Apply transformation to ensure merged fields are preserved
+          operationSchema = operationSchema.transform((input) => {
+            // Merge fields from both schemas
+            const paramResult = parametersSchema.safeParse(input).success ? input : {};
+            const bodyResult = flattenedRequestBodySchema.safeParse(input).success ? input : {};
+            
+            return { ...paramResult, ...bodyResult };
+          });
         }
       } else {
         operationSchema = parametersSchema
