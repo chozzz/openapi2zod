@@ -7,6 +7,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DE
   "definitions": {
     "deleteJiraFixVersion": {
       "additionalProperties": false,
+      "description": "Deletes a fix version in Jira by its version ID.",
       "properties": {
         "versionId": {
           "description": "The ID of the fix version to delete.",
@@ -29,6 +30,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DE
   "definitions": {
     "deleteJiraIssueComment": {
       "additionalProperties": false,
+      "description": "Delete a specific comment from a Jira issue.",
       "properties": {
         "commentId": {
           "description": "The ID of the comment to delete.",
@@ -56,6 +58,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DE
   "definitions": {
     "deleteJiraSprint": {
       "additionalProperties": false,
+      "description": "Deletes a sprint in Jira by its sprint ID.",
       "properties": {
         "sprintId": {
           "description": "The ID of the sprint to delete.",
@@ -78,6 +81,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "GE
   "definitions": {
     "createGmailLabelsAndFilters": {
       "additionalProperties": false,
+      "description": "Create labels and filters in Gmail",
       "properties": {
         "filtersToCreate": {
           "description": "Filters to create",
@@ -101,6 +105,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PA
   "definitions": {
     "updateJiraIssue": {
       "additionalProperties": false,
+      "description": "Update Jira issue details, including custom fields like priority, story points, sprint, etc. Requires \`bodyData\` argument to be provided.",
       "properties": {
         "bodyData": {
           "description": "The fields to update in the Jira issue as a JSON string.",
@@ -128,6 +133,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PA
   "definitions": {
     "updateJiraIssueComment": {
       "additionalProperties": false,
+      "description": "Update an existing comment on a specific Jira issue.",
       "properties": {
         "commentBody": {
           "description": "The updated content of the comment.",
@@ -160,6 +166,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PA
   "definitions": {
     "updateJiraSprint": {
       "additionalProperties": false,
+      "description": "Updates a sprint in Jira with specified parameters such as sprint ID, name, start date, end date, goal, and state. If sprint ID is not provided, returns a list of available sprints.",
       "properties": {
         "endDate": {
           "description": "The new end date of the sprint in ISO8601 format.",
@@ -199,6 +206,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
+  "description": "Add a comment to a specific Jira issue.",
   "properties": {
     "commentBody": {
       "description": "The content of the comment.",
@@ -224,6 +232,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "addProductiveTimeEntry": {
       "additionalProperties": false,
+      "description": "Updates an existing time entry in Productive by sending a POST request to the Productive API v2.",
       "properties": {
         "dateString": {
           "description": "Date of the time entry, in natural language (e.g., 'tomorrow', 'next Friday'). Chrono-node parses it. Default: 'today at 23:59'",
@@ -264,6 +273,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "assignJiraIssue": {
       "additionalProperties": false,
+      "description": "Assigns a Jira issue to a specified assignee. If the assignee is not provided, it returns the available assignees for the issue.",
       "properties": {
         "assignee": {
           "description": "The account ID or username of the assignee. If not provided, available assignees will be returned.",
@@ -290,6 +300,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "commentOnGithubIssue": {
       "additionalProperties": false,
+      "description": "Add a comment to an existing issue in a specified GitHub repository.",
       "properties": {
         "commentBody": {
           "description": "The content of the comment.",
@@ -327,6 +338,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "createGoogleDriveFile": {
       "additionalProperties": false,
+      "description": "Creates and uploads a file to Google Drive with a specified filename and content using Google OAuth token.",
       "properties": {
         "fileContent": {
           "description": "The content to be written into the file.",

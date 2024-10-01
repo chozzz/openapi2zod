@@ -7,43 +7,25 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "al
   "definitions": {
     "allOfExample": {
       "additionalProperties": false,
+      "description": "This endpoint accepts a request body that must conform to all of the specified schemas.",
       "properties": {
-        "requestBody": {
-          "allOf": [
-            {
-              "properties": {
-                "id": {
-                  "description": "Unique identifier",
-                  "type": "string",
-                },
-                "name": {
-                  "description": "Name of the entity",
-                  "type": "string",
-                },
-              },
-              "required": [
-                "id",
-                "name",
-              ],
-              "type": "object",
-            },
-            {
-              "properties": {
-                "additionalProperty": {
-                  "description": "An additional property required by this endpoint.",
-                  "type": "string",
-                },
-              },
-              "required": [
-                "additionalProperty",
-              ],
-              "type": "object",
-            },
-          ],
+        "additionalProperty": {
+          "description": "An additional property required by this endpoint.",
+          "type": "string",
+        },
+        "id": {
+          "description": "Unique identifier",
+          "type": "string",
+        },
+        "name": {
+          "description": "Name of the entity",
+          "type": "string",
         },
       },
       "required": [
-        "requestBody",
+        "id",
+        "name",
+        "additionalProperty",
       ],
       "type": "object",
     },
@@ -57,41 +39,33 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "an
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "anyOfExample": {
-      "additionalProperties": false,
-      "properties": {
-        "requestBody": {
-          "anyOf": [
-            {
-              "additionalProperties": false,
-              "properties": {
-                "option1": {
-                  "type": "string",
-                },
-              },
-              "required": [
-                "option1",
-              ],
-              "type": "object",
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "option1": {
+              "type": "string",
             },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "option2": {
-                  "type": "integer",
-                },
-              },
-              "required": [
-                "option2",
-              ],
-              "type": "object",
-            },
+          },
+          "required": [
+            "option1",
           ],
+          "type": "object",
         },
-      },
-      "required": [
-        "requestBody",
+        {
+          "additionalProperties": false,
+          "properties": {
+            "option2": {
+              "type": "integer",
+            },
+          },
+          "required": [
+            "option2",
+          ],
+          "type": "object",
+        },
       ],
-      "type": "object",
+      "description": "This endpoint accepts a request body that can be any combination of the specified schemas.",
     },
   },
 }
@@ -103,11 +77,7 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "no
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "notExample": {
-      "additionalProperties": false,
-      "properties": {
-        "requestBody": {},
-      },
-      "type": "object",
+      "description": "This endpoint accepts a request body that must not conform to a specified schema.",
     },
   },
 }
@@ -119,55 +89,47 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "on
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "oneOfExample": {
-      "additionalProperties": false,
-      "properties": {
-        "requestBody": {
-          "anyOf": [
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "enum": [
-                    "A",
-                  ],
-                  "type": "string",
-                },
-                "value": {
-                  "type": "string",
-                },
-              },
-              "required": [
-                "type",
-                "value",
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "A",
               ],
-              "type": "object",
+              "type": "string",
             },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "amount": {
-                  "type": "number",
-                },
-                "type": {
-                  "enum": [
-                    "B",
-                  ],
-                  "type": "string",
-                },
-              },
-              "required": [
-                "type",
-                "amount",
-              ],
-              "type": "object",
+            "value": {
+              "type": "string",
             },
+          },
+          "required": [
+            "type",
+            "value",
           ],
+          "type": "object",
         },
-      },
-      "required": [
-        "requestBody",
+        {
+          "additionalProperties": false,
+          "properties": {
+            "amount": {
+              "type": "number",
+            },
+            "type": {
+              "enum": [
+                "B",
+              ],
+              "type": "string",
+            },
+          },
+          "required": [
+            "type",
+            "amount",
+          ],
+          "type": "object",
+        },
       ],
-      "type": "object",
+      "description": "This endpoint accepts a request body that must conform to one of the specified schemas.",
     },
   },
 }

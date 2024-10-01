@@ -1,95 +1,194 @@
-import { z, ZodSchema, ZodTypeAny } from "zod";
-import { OpenAPIV3 } from "openapi-types";
-import { openApiSchemaToZod } from "./openapi-schema-to-zod";
+import { z, ZodSchema, ZodTypeAny, ZodObject, ZodUnion } from 'zod'
+import { OpenAPIV3 } from 'openapi-types'
+import { openApiSchemaToZod } from './openapi-schema-to-zod'
+import { flattenZodType } from './utils/flattenZodType'
 
-/**
- * Parses an OpenAPI schema and returns Zod schemas for all operations.
- * @param openApiSchema - The OpenAPI schema object
- * @returns - A record mapping operation IDs to their Zod schemas
- */
 export function parseOpenApiToZod(openApiSchema: OpenAPIV3.Document): Record<string, ZodSchema> {
-  const zodSchemas: Record<string, ZodSchema> = {};
+  const zodSchemas: Record<string, ZodSchema> = {}
 
-  const paths = openApiSchema.paths || {};
-  const schemas = openApiSchema.components?.schemas || {};
+  const paths = openApiSchema.paths || {}
+  const schemas = openApiSchema.components?.schemas || {}
 
   // Convert schemas to proper mapping for reference resolution
-  const schemaMap: Record<string, OpenAPIV3.SchemaObject> = {};
+  const schemaMap: Record<string, OpenAPIV3.SchemaObject> = {}
   for (const [schemaName, schemaDef] of Object.entries(schemas)) {
     if (!('$ref' in schemaDef)) {
-      schemaMap[schemaName] = schemaDef;
+      schemaMap[schemaName] = schemaDef
     }
   }
 
   for (const [path, pathItem] of Object.entries(paths)) {
-    if (!pathItem) continue;
+    if (!pathItem) continue
 
-    for (const method of ['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace'] as const) {
-      const operation = pathItem[method] as OpenAPIV3.OperationObject | undefined;
-      if (!operation) continue;
+    for (const method of [
+      'get',
+      'post',
+      'put',
+      'patch',
+      'delete',
+      'options',
+      'head',
+      'trace',
+    ] as const) {
+      const operation = pathItem[method] as OpenAPIV3.OperationObject | undefined
+      if (!operation) continue
 
-      const operationId = operation.operationId || `${method.toUpperCase()} ${path}`;
+      const operationId = operation.operationId || `${method.toUpperCase()} ${path}`
 
       const parameters = [
         ...(pathItem.parameters || []),
         ...(operation.parameters || []),
-      ] as OpenAPIV3.ParameterObject[];
+      ] as OpenAPIV3.ParameterObject[]
 
-      const requestBody = operation.requestBody;
+      const requestBody = operation.requestBody
 
       // Collect all parameters and request body properties
-      const combinedSchemas: Record<string, ZodTypeAny> = {};
+      const combinedSchemas: Record<string, ZodTypeAny> = {}
 
       // Process parameters
       for (const param of parameters) {
-        const { name, required } = param;
-        let paramSchema: ZodTypeAny;
+        const { name, required } = param
+        let paramSchema: ZodTypeAny
 
         if ('schema' in param && param.schema) {
-          paramSchema = openApiSchemaToZod(param.schema, schemaMap);
+          paramSchema = openApiSchemaToZod(param.schema, schemaMap)
         } else {
-          console.warn(`Parameter ${name} missing schema.`);
-          paramSchema = z.any();
+          console.warn(`Parameter ${name} missing schema.`)
+          paramSchema = z.any()
         }
-        
+
         // Attach description to object if available
         if (param?.description && !paramSchema.description) {
-          paramSchema = paramSchema.describe(param.description);
+          paramSchema = paramSchema.describe(param.description)
         }
 
         if (!required) {
-          paramSchema = paramSchema.optional();
+          paramSchema = paramSchema.optional()
         }
 
-        combinedSchemas[name] = paramSchema;
+        combinedSchemas[name] = paramSchema
       }
+
+      // Create parameters schema
+      const parametersSchema = z.object(combinedSchemas)
 
       // Process requestBody
-      let requestBodySchema: ZodTypeAny | undefined = undefined;
+      let requestBodySchema: ZodTypeAny | undefined = undefined
 
       if (requestBody && 'content' in requestBody && requestBody.content) {
-        const requestBodyObj = requestBody as OpenAPIV3.RequestBodyObject;
-        const jsonContent = requestBodyObj.content["application/json"];
+        const requestBodyObj = requestBody as OpenAPIV3.RequestBodyObject
+        const jsonContent = requestBodyObj.content['application/json']
         if (jsonContent && 'schema' in jsonContent && jsonContent.schema) {
-          requestBodySchema = openApiSchemaToZod(jsonContent.schema, schemaMap);
-
-          if (requestBodySchema instanceof z.ZodObject) {
-            Object.assign(combinedSchemas, requestBodySchema.shape);
-          } else {
-            combinedSchemas['requestBody'] = requestBodySchema;
-          }
+          requestBodySchema = openApiSchemaToZod(jsonContent.schema, schemaMap)
         } else {
-          console.warn(`Request body for operation ${operationId} missing 'application/json' content schema.`);
+          console.warn(
+            `Request body for operation ${operationId} missing 'application/json' content schema.`,
+          )
         }
       }
 
-      // Create the operation schema
-      const operationSchema = z.object(combinedSchemas);
+      let operationSchema: ZodTypeAny
+
+      if (requestBodySchema) {
+        const isParametersSchemaEmpty =
+          parametersSchema instanceof z.ZodObject &&
+          Object.keys(parametersSchema.shape).length === 0
+
+        if (isParametersSchemaEmpty) {
+          // No parameters, use requestBodySchema directly
+          operationSchema = requestBodySchema
+        } else {
+          // Merge parametersSchema and requestBodySchema appropriately
+          // Existing logic for merging schemas
+          const flattenedRequestBodySchema = flattenZodType(requestBodySchema)
+
+          if (flattenedRequestBodySchema instanceof z.ZodObject) {
+            operationSchema = parametersSchema.merge(flattenedRequestBodySchema)
+          } else if (flattenedRequestBodySchema instanceof z.ZodUnion) {
+            // Handle ZodUnion similar to previous logic
+            const unionOptions = flattenedRequestBodySchema.options
+
+            const mergedOptions = unionOptions.map((option: z.ZodObject<any> | z.ZodAny) => {
+              if (option instanceof z.ZodObject) {
+                return parametersSchema.merge(option)
+              } else {
+                return z.intersection(parametersSchema, option)
+              }
+            })
+
+            if (mergedOptions.length >= 2) {
+              operationSchema = z.union(mergedOptions as [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]])
+            } else if (mergedOptions.length === 1) {
+              operationSchema = mergedOptions[0]
+            } else {
+              operationSchema = parametersSchema
+            }
+          } else {
+            // For other types of requestBodySchema, use z.intersection
+            operationSchema = z.intersection(parametersSchema, flattenedRequestBodySchema)
+          }
+        }
+      } else {
+        operationSchema = parametersSchema
+      }
+      /*
+      if (requestBodySchema) {
+        // Flatten requestBodySchema if it's an intersection
+        const flattenedRequestBodySchema = flattenZodType(requestBodySchema);
+        
+        if (flattenedRequestBodySchema instanceof z.ZodObject) {
+          // Merge parametersSchema and requestBodySchema
+          operationSchema = parametersSchema.merge(flattenedRequestBodySchema);
+        }
+        else if (flattenedRequestBodySchema instanceof z.ZodUnion) {
+          // Handle ZodUnion similar to previous logic
+          const unionOptions = flattenedRequestBodySchema.options;
+      
+          const mergedOptions = unionOptions.map((option: z.ZodObject<any> | z.ZodAny) => {
+            if (option instanceof z.ZodObject) {
+              return parametersSchema.merge(option);
+            } else {
+              // Use z.intersection for non-object options
+              return z.intersection(parametersSchema, option);
+            }
+          });
+      
+          if (mergedOptions.length >= 2) {
+            operationSchema = z.union(mergedOptions as [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]);
+          } else if (mergedOptions.length === 1) {
+            operationSchema = mergedOptions[0];
+          } else {
+            operationSchema = parametersSchema;
+          }
+        }
+        else if (flattenedRequestBodySchema instanceof z.ZodEffects) {
+          // For ZodEffects (e.g., from 'not'), apply the refinement to parametersSchema
+          operationSchema = parametersSchema.superRefine((data, ctx) => {
+            const forbiddenResult = flattenedRequestBodySchema.safeParse(data);
+            if (forbiddenResult.success) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Data must not conform to forbidden schema',
+              });
+            }
+          });
+        }
+        else {
+          // Use z.intersection for other types
+          operationSchema = z.intersection(parametersSchema, flattenedRequestBodySchema);
+        }
+      } else {
+        operationSchema = parametersSchema;
+      }
+    */
+
+      // Attach description or summary to operationSchema if available
+      operationSchema = operationSchema.describe(operation.description || operation.summary || '')
 
       // Add the schema to the result
-      zodSchemas[operationId] = operationSchema;
+      zodSchemas[operationId] = operationSchema
     }
   }
 
-  return zodSchemas;
+  return zodSchemas
 }
