@@ -44,13 +44,11 @@
                 "properties": {
                   "issueIdOrKey": {
                     "type": "string",
-                    "description": "The ID or key of the Jira issue to add a comment to.",
-                    "default": ""
+                    "description": "The ID or key of the Jira issue to add a comment to."
                   },
                   "commentBody": {
                     "type": "string",
-                    "description": "The content of the comment.",
-                    "default": ""
+                    "description": "The content of the comment."
                   }
                 },
                 "required": [
@@ -101,8 +99,7 @@
                 "properties": {
                   "note": {
                     "type": "string",
-                    "description": "Note of the work done for this time entry",
-                    "default": ""
+                    "description": "Note of the work done for this time entry"
                   },
                   "dateString": {
                     "type": "string",
@@ -174,13 +171,11 @@
                 "properties": {
                   "issueIdOrKey": {
                     "type": "string",
-                    "description": "The ID or key of the Jira issue.",
-                    "default": ""
+                    "description": "The ID or key of the Jira issue."
                   },
                   "assignee": {
                     "type": "string",
-                    "description": "The account ID or username of the assignee. If not provided, available assignees will be returned.",
-                    "default": ""
+                    "description": "The account ID or username of the assignee. If not provided, available assignees will be returned."
                   }
                 },
                 "required": [
@@ -230,23 +225,19 @@
                 "properties": {
                   "repoOwner": {
                     "type": "string",
-                    "description": "The owner of the repository.",
-                    "default": ""
+                    "description": "The owner of the repository."
                   },
                   "repoName": {
                     "type": "string",
-                    "description": "The name of the repository.",
-                    "default": ""
+                    "description": "The name of the repository."
                   },
                   "issueNumber": {
                     "type": "integer",
-                    "description": "The number of the issue to comment on.",
-                    "default": ""
+                    "description": "The number of the issue to comment on."
                   },
                   "commentBody": {
                     "type": "string",
-                    "description": "The content of the comment.",
-                    "default": ""
+                    "description": "The content of the comment."
                   }
                 },
                 "required": [
@@ -298,8 +289,7 @@
             "description": "Labels to create",
             "required": false,
             "schema": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           },
           {
@@ -308,8 +298,7 @@
             "description": "Filters to create",
             "required": false,
             "schema": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         ]
@@ -412,8 +401,7 @@
             "description": "The ID of the fix version to delete.",
             "required": true,
             "schema": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         ]
@@ -456,8 +444,7 @@
             "description": "The ID or key of the Jira issue to delete the comment from.",
             "required": true,
             "schema": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           },
           {
@@ -466,8 +453,7 @@
             "description": "The ID of the comment to delete.",
             "required": true,
             "schema": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         ]
@@ -511,8 +497,7 @@
             "description": "The ID of the sprint to delete.",
             "required": true,
             "schema": {
-              "type": "integer",
-              "default": ""
+              "type": "integer"
             }
           }
         ]
@@ -556,13 +541,11 @@
                 "properties": {
                   "issueIdOrKey": {
                     "type": "string",
-                    "description": "The ID or key of the Jira issue to update.",
-                    "default": ""
+                    "description": "The ID or key of the Jira issue to update."
                   },
                   "bodyData": {
                     "type": "string",
-                    "description": "The fields to update in the Jira issue as a JSON string.",
-                    "default": ""
+                    "description": "The fields to update in the Jira issue as a JSON string."
                   }
                 },
                 "required": [
@@ -613,18 +596,15 @@
                 "properties": {
                   "issueIdOrKey": {
                     "type": "string",
-                    "description": "The ID or key of the Jira issue to update the comment for.",
-                    "default": ""
+                    "description": "The ID or key of the Jira issue to update the comment for."
                   },
                   "commentId": {
                     "type": "string",
-                    "description": "The ID of the comment to update.",
-                    "default": ""
+                    "description": "The ID of the comment to update."
                   },
                   "commentBody": {
                     "type": "string",
-                    "description": "The updated content of the comment.",
-                    "default": ""
+                    "description": "The updated content of the comment."
                   }
                 },
                 "required": [
@@ -677,33 +657,27 @@
                 "properties": {
                   "sprintId": {
                     "type": "integer",
-                    "description": "The ID of the sprint to update.",
-                    "default": ""
+                    "description": "The ID of the sprint to update."
                   },
                   "name": {
                     "type": "string",
-                    "description": "The new name of the sprint.",
-                    "default": ""
+                    "description": "The new name of the sprint."
                   },
                   "startDate": {
                     "type": "string",
-                    "description": "The new start date of the sprint in ISO8601 format.",
-                    "default": ""
+                    "description": "The new start date of the sprint in ISO8601 format."
                   },
                   "endDate": {
                     "type": "string",
-                    "description": "The new end date of the sprint in ISO8601 format.",
-                    "default": ""
+                    "description": "The new end date of the sprint in ISO8601 format."
                   },
                   "goal": {
                     "type": "string",
-                    "description": "The new goal of the sprint.",
-                    "default": ""
+                    "description": "The new goal of the sprint."
                   },
                   "state": {
                     "type": "string",
-                    "description": "The new state of the sprint (e.g., active, closed).",
-                    "default": ""
+                    "description": "The new state of the sprint (e.g., active, closed)."
                   }
                 },
                 "required": [

@@ -131,56 +131,6 @@ export function parseOpenApiToZod(openApiSchema: OpenAPIV3.Document): Record<str
       } else {
         operationSchema = parametersSchema
       }
-      /*
-      if (requestBodySchema) {
-        // Flatten requestBodySchema if it's an intersection
-        const flattenedRequestBodySchema = flattenZodType(requestBodySchema);
-        
-        if (flattenedRequestBodySchema instanceof z.ZodObject) {
-          // Merge parametersSchema and requestBodySchema
-          operationSchema = parametersSchema.merge(flattenedRequestBodySchema);
-        }
-        else if (flattenedRequestBodySchema instanceof z.ZodUnion) {
-          // Handle ZodUnion similar to previous logic
-          const unionOptions = flattenedRequestBodySchema.options;
-      
-          const mergedOptions = unionOptions.map((option: z.ZodObject<any> | z.ZodAny) => {
-            if (option instanceof z.ZodObject) {
-              return parametersSchema.merge(option);
-            } else {
-              // Use z.intersection for non-object options
-              return z.intersection(parametersSchema, option);
-            }
-          });
-      
-          if (mergedOptions.length >= 2) {
-            operationSchema = z.union(mergedOptions as [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]);
-          } else if (mergedOptions.length === 1) {
-            operationSchema = mergedOptions[0];
-          } else {
-            operationSchema = parametersSchema;
-          }
-        }
-        else if (flattenedRequestBodySchema instanceof z.ZodEffects) {
-          // For ZodEffects (e.g., from 'not'), apply the refinement to parametersSchema
-          operationSchema = parametersSchema.superRefine((data, ctx) => {
-            const forbiddenResult = flattenedRequestBodySchema.safeParse(data);
-            if (forbiddenResult.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'Data must not conform to forbidden schema',
-              });
-            }
-          });
-        }
-        else {
-          // Use z.intersection for other types
-          operationSchema = z.intersection(parametersSchema, flattenedRequestBodySchema);
-        }
-      } else {
-        operationSchema = parametersSchema;
-      }
-    */
 
       // Attach description or summary to operationSchema if available
       operationSchema = operationSchema.describe(operation.description || operation.summary || '')

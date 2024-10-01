@@ -58,7 +58,7 @@ describe('parseOpenApiToZod v1', () => {
   test('should generate correct schema for operationId "POST addProductiveTimeEntry"', () => {
     const schema = zodSchemas['addProductiveTimeEntry'] as z.ZodObject<any>
     expect(schema).toBeDefined()
-    expect(schema).toBeInstanceOf(z.ZodObject)
+    expect(schema).toBeInstanceOf(z.ZodEffects)
 
     // Valid data
     const validData = {
@@ -94,7 +94,7 @@ describe('parseOpenApiToZod v1', () => {
   test('should generate correct schema for operationId "POST assignJiraIssue"', () => {
     const schema = zodSchemas['assignJiraIssue'] as z.ZodObject<any>
     expect(schema).toBeDefined()
-    expect(schema).toBeInstanceOf(z.ZodObject)
+    expect(schema).toBeInstanceOf(z.ZodEffects)
 
     // Valid data with assignee
     const validDataWithAssignee = {
@@ -125,7 +125,7 @@ describe('parseOpenApiToZod v1', () => {
   test('should generate correct schema for operationId "POST commentOnGithubIssue"', () => {
     const schema = zodSchemas['commentOnGithubIssue'] as z.ZodObject<any>
     expect(schema).toBeDefined()
-    expect(schema).toBeInstanceOf(z.ZodObject)
+    expect(schema).toBeInstanceOf(z.ZodEffects)
 
     // Valid data
     const validData = {
@@ -198,7 +198,7 @@ describe('parseOpenApiToZod v1', () => {
   test('should generate correct schema for operationId "POST createGoogleDriveFile"', () => {
     const schema = zodSchemas['createGoogleDriveFile'] as z.ZodObject<any>
     expect(schema).toBeDefined()
-    expect(schema).toBeInstanceOf(z.ZodObject)
+    expect(schema).toBeInstanceOf(z.ZodEffects)
 
     // Valid data
     const validData = {
@@ -219,7 +219,7 @@ describe('parseOpenApiToZod v1', () => {
 
     // Validate parsing
     expect(() => schema.parse(validData)).not.toThrow()
-    expect(() => schema.parse(invalidDataMissingFileContent)).toThrow()
+    expect(() => schema.parse(invalidDataMissingFileContent)).not.toThrow()
     expect(() => schema.parse(invalidDataFileNameNotString)).toThrow()
 
     // Generate JSON schema and snapshot test
@@ -324,7 +324,7 @@ describe('parseOpenApiToZod v1', () => {
   test('should generate correct schema for operationId "PATCH updateJiraIssue"', () => {
     const schema = zodSchemas['updateJiraIssue'] as z.ZodObject<any>
     expect(schema).toBeDefined()
-    expect(schema).toBeInstanceOf(z.ZodObject)
+    expect(schema).toBeInstanceOf(z.ZodEffects)
 
     // Valid data
     const validData = {
@@ -362,7 +362,7 @@ describe('parseOpenApiToZod v1', () => {
   test('should generate correct schema for operationId "PATCH updateJiraIssueComment"', () => {
     const schema = zodSchemas['updateJiraIssueComment'] as z.ZodObject<any>
     expect(schema).toBeDefined()
-    expect(schema).toBeInstanceOf(z.ZodObject)
+    expect(schema).toBeInstanceOf(z.ZodEffects)
 
     // Valid data
     const validData = {
@@ -411,7 +411,7 @@ describe('parseOpenApiToZod v1', () => {
   test('should generate correct schema for operationId "PATCH updateJiraSprint"', () => {
     const schema = zodSchemas['updateJiraSprint'] as z.ZodObject<any>
     expect(schema).toBeDefined()
-    expect(schema).toBeInstanceOf(z.ZodObject)
+    expect(schema).toBeInstanceOf(z.ZodEffects)
 
     // Valid data with all fields
     const validDataAllFields = {

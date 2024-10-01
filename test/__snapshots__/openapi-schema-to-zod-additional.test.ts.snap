@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`openApiSchemaToZod - Additional Coverage Tests should apply default values to nested properties 1`] = `
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "default": {
+    "details": {
+      "age": 25,
+    },
+    "name": "Default Name",
+  },
+  "properties": {
+    "details": {
+      "additionalProperties": false,
+      "default": {
+        "age": 25,
+      },
+      "properties": {
+        "age": {
+          "default": 25,
+          "type": "number",
+        },
+      },
+      "type": "object",
+    },
+    "name": {
+      "default": "Default Name",
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

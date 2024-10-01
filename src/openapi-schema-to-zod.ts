@@ -1,6 +1,45 @@
-import { z, ZodEffects, ZodString, ZodTypeAny, ZodObject } from 'zod'
+import { z, ZodEffects, ZodString, ZodTypeAny, ZodObject, ZodDefault } from 'zod'
 import { OpenAPIV3 } from 'openapi-types'
 import { flattenZodType } from './utils/flattenZodType'
+import { applyDefaultValue } from './utils/applyDefaultValue'
+import zodToJsonSchema from 'zod-to-json-schema';
+
+/**
+ * Recursively collects default values from an object schema.
+ * @param schema - The OpenAPI schema object.
+ * @returns - A partial object containing only default values.
+ */
+function getDefaultValues(schema: OpenAPIV3.SchemaObject): Record<string, any> | undefined {
+  if (!schema || typeof schema !== 'object' || schema.type !== 'object' || !schema.properties) {
+    return undefined;
+  }
+
+  const defaultValues: Record<string, any> = {};
+  let hasDefaults = false;
+
+  for (const [key, propertySchema] of Object.entries(schema.properties)) {
+    const propertyObject = propertySchema as OpenAPIV3.SchemaObject;
+
+    // Check if this property has a default value
+    if (propertyObject.default !== undefined) {
+      defaultValues[key] = propertyObject.default;
+      hasDefaults = true;
+    }
+
+    // Recursively check if nested objects have defaults
+    if (propertyObject.type === 'object' && propertyObject.properties) {
+      const nestedDefaults = getDefaultValues(propertyObject);
+      if (nestedDefaults !== undefined) {
+        // Merge the nested default values
+        defaultValues[key] = { ...defaultValues[key], ...nestedDefaults };
+        hasDefaults = true;
+      }
+    }
+  }
+
+  // Return the object with default values if any were found, else undefined
+  return hasDefaults ? defaultValues : undefined;
+}
 
 /**
  * Converts an OpenAPI schema object to a Zod schema.
@@ -118,11 +157,12 @@ export function openApiSchemaToZod(
           if ('description' in schema && schema.description) {
             enumSchema = enumSchema.describe(schema.description)
           }
+
           return enumSchema
         }
 
         // Start with a ZodString
-        let stringSchema: ZodString | ZodEffects<ZodString, any, any> = z.string()
+        let stringSchema: ZodString | ZodEffects<ZodString, any, any> | ZodDefault<ZodString> = z.string()
 
         // Handle formats
         if ('format' in schema && schema.format) {
@@ -134,9 +174,15 @@ export function openApiSchemaToZod(
               stringSchema = stringSchema.uuid()
               break
             case 'uri':
+              stringSchema = stringSchema.url(); // Strict URL validation for 'uri'
+              break;
             case 'uri-reference':
-              stringSchema = stringSchema.url()
-              break
+              // Custom validation for 'uri-reference' to allow paths and fragments
+              stringSchema = stringSchema.refine(
+                (val) => typeof val === 'string' && /^[a-zA-Z0-9\/#\?&\.]+$/.test(val),
+                { message: 'Invalid uri-reference format' }
+              );
+              break;
             case 'hostname':
               stringSchema = stringSchema.refine(
                 (val) => {
@@ -198,6 +244,11 @@ export function openApiSchemaToZod(
           stringSchema = stringSchema.describe(schema.description)
         }
 
+        // Apply default value if available
+        if ('default' in schema && schema.default) {
+          stringSchema = applyDefaultValue(stringSchema as ZodString, schema.default)
+        }
+
         return stringSchema
       }
       case 'integer': {
@@ -206,6 +257,11 @@ export function openApiSchemaToZod(
         // Attach description if available
         if ('description' in schema && schema.description) {
           integerSchema = integerSchema.describe(schema.description)
+        }
+
+        // Apply default value if available
+        if ('default' in schema && schema.default) {
+          integerSchema = applyDefaultValue(integerSchema, schema.default) as z.ZodNumber;
         }
 
         return integerSchema
@@ -218,6 +274,11 @@ export function openApiSchemaToZod(
           numberSchema = numberSchema.describe(schema.description)
         }
 
+        // Apply default value if available
+        if ('default' in schema && schema.default) {
+          numberSchema = applyDefaultValue(numberSchema, schema.default) as z.ZodNumber;
+        }
+
         return numberSchema
       }
       case 'boolean': {
@@ -226,6 +287,11 @@ export function openApiSchemaToZod(
         // Attach description if available
         if ('description' in schema && schema.description) {
           booleanSchema = booleanSchema.describe(schema.description)
+        }
+
+        // Apply default value if available
+        if ('default' in schema && schema.default) {
+          booleanSchema = applyDefaultValue(booleanSchema, schema.default) as z.ZodBoolean;
         }
 
         return booleanSchema
@@ -239,6 +305,11 @@ export function openApiSchemaToZod(
             arraySchema = arraySchema.describe(schema.description)
           }
 
+          // Apply default value if available
+          if ('default' in schema && schema.default) {
+            arraySchema = applyDefaultValue(arraySchema, schema.default) as z.ZodArray<ZodTypeAny, "many">;
+          }
+
           return arraySchema
         } else {
           console.warn("Array schema without 'items' property.")
@@ -246,43 +317,57 @@ export function openApiSchemaToZod(
         }
       }
       case 'object': {
-        const properties = schema.properties || {}
-        const requiredProps = schema.required || []
-        const zodProperties: Record<string, ZodTypeAny> = {}
-
+        const properties = schema.properties || {};
+        const requiredProps = schema.required || [];
+        const zodProperties: Record<string, ZodTypeAny> = {};
+    
         for (const [key, value] of Object.entries(properties)) {
-          let propertySchema = openApiSchemaToZod(value as OpenAPIV3.SchemaObject, schemas)
-
+          let propertySchema = openApiSchemaToZod(value as OpenAPIV3.SchemaObject, schemas);
+    
           if (!requiredProps.includes(key)) {
-            propertySchema = propertySchema.optional()
+            propertySchema = propertySchema.optional();
           }
-
-          // Attach description to property if available
+    
           if ('description' in value && value.description) {
-            propertySchema = propertySchema.describe(value.description)
+            propertySchema = propertySchema.describe(value.description);
           }
-
-          zodProperties[key] = propertySchema
+    
+          if ('default' in value && value.default !== undefined) {
+            propertySchema = applyDefaultValue(propertySchema, value.default);
+          }
+    
+          zodProperties[key] = propertySchema;
         }
-
-        let objectSchema = z.object(zodProperties)
-
+    
+        let objectSchema: ZodObject<Record<string, ZodTypeAny>> = z.object(zodProperties);
+    
         if (schema.additionalProperties) {
           if (schema.additionalProperties === true) {
-            objectSchema = objectSchema.catchall(z.any())
+            objectSchema = objectSchema.catchall(z.any());
           } else if (typeof schema.additionalProperties === 'object') {
-            objectSchema = objectSchema.catchall(
-              openApiSchemaToZod(schema.additionalProperties, schemas),
-            )
+            objectSchema = objectSchema.catchall(openApiSchemaToZod(schema.additionalProperties, schemas));
           }
         }
-
-        // Attach description to object if available
+    
         if ('description' in schema && schema.description) {
-          objectSchema = objectSchema.describe(schema.description)
+          objectSchema = objectSchema.describe(schema.description);
         }
+    
+        // Set parent default value based on child defaults
+        const defaultValues = getDefaultValues(schema);
 
-        return objectSchema
+        if (defaultValues !== undefined) {
+          objectSchema = objectSchema.default(defaultValues) as unknown as ZodObject<Record<string, ZodTypeAny>, "strip", ZodTypeAny, { [x: string]: any }, { [x: string]: any }>;
+        }
+        
+        // Use transform to enforce default structure when parsing
+        objectSchema = objectSchema.transform((input, ctx) => {
+          // Merge defaults with input, ensuring nested defaults are respected
+          return { ...defaultValues, ...input };
+        }) as unknown as ZodObject<Record<string, ZodTypeAny>, "strip", ZodTypeAny, { [x: string]: any }, { [x: string]: any }>;
+
+    
+        return objectSchema;
       }
       default:
         console.warn(`Unhandled schema type: ${schema.type}`)

@@ -232,13 +232,21 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "addProductiveTimeEntry": {
       "additionalProperties": false,
+      "default": {
+        "dateString": "today",
+        "hours": "8",
+        "person_id": "404947",
+        "service_id": "3173137",
+      },
       "description": "Updates an existing time entry in Productive by sending a POST request to the Productive API v2.",
       "properties": {
         "dateString": {
+          "default": "today",
           "description": "Date of the time entry, in natural language (e.g., 'tomorrow', 'next Friday'). Chrono-node parses it. Default: 'today at 23:59'",
           "type": "string",
         },
         "hours": {
+          "default": "8",
           "description": "Number of hours logged",
           "type": "integer",
         },
@@ -247,17 +255,18 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
           "type": "string",
         },
         "person_id": {
+          "default": "404947",
           "description": " ID of the user associated with the time entry. Leaving it empty will return all available person. Defaults to my person ID.",
           "type": "string",
         },
         "service_id": {
+          "default": "3173137",
           "description": " ID of the service associated with the time entry. Leaving it empty will return all available services. Defaults to my service ID.",
           "type": "string",
         },
       },
       "required": [
         "note",
-        "dateString",
         "hours",
       ],
       "type": "object",
@@ -338,21 +347,23 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "createGoogleDriveFile": {
       "additionalProperties": false,
+      "default": {
+        "fileContent": "This is a sample content.",
+        "fileName": "README.txt",
+      },
       "description": "Creates and uploads a file to Google Drive with a specified filename and content using Google OAuth token.",
       "properties": {
         "fileContent": {
+          "default": "This is a sample content.",
           "description": "The content to be written into the file.",
           "type": "string",
         },
         "fileName": {
+          "default": "README.txt",
           "description": "The name of the file to be created.",
           "type": "string",
         },
       },
-      "required": [
-        "fileName",
-        "fileContent",
-      ],
       "type": "object",
     },
   },

@@ -6,28 +6,38 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "al
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "allOfExample": {
-      "additionalProperties": false,
-      "description": "This endpoint accepts a request body that must conform to all of the specified schemas.",
-      "properties": {
-        "additionalProperty": {
-          "description": "An additional property required by this endpoint.",
-          "type": "string",
+      "allOf": [
+        {
+          "properties": {
+            "id": {
+              "description": "Unique identifier",
+              "type": "string",
+            },
+            "name": {
+              "description": "Name of the entity",
+              "type": "string",
+            },
+          },
+          "required": [
+            "id",
+            "name",
+          ],
+          "type": "object",
         },
-        "id": {
-          "description": "Unique identifier",
-          "type": "string",
+        {
+          "properties": {
+            "additionalProperty": {
+              "description": "An additional property required by this endpoint.",
+              "type": "string",
+            },
+          },
+          "required": [
+            "additionalProperty",
+          ],
+          "type": "object",
         },
-        "name": {
-          "description": "Name of the entity",
-          "type": "string",
-        },
-      },
-      "required": [
-        "id",
-        "name",
-        "additionalProperty",
       ],
-      "type": "object",
+      "description": "This endpoint accepts a request body that must conform to all of the specified schemas.",
     },
   },
 }

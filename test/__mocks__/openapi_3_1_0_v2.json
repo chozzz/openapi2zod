@@ -288,8 +288,7 @@
         "type": "object",
         "properties": {
           "forbidden": {
-            "type": "boolean",
-            "default": true
+            "type": "boolean"
           }
         },
         "required": [
