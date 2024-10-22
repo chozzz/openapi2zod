@@ -7,13 +7,30 @@ const json = require('rollup-plugin-json')
 
 const pkg = require('./package.json')
 
-const libraryName = 'openapi-to-zod'
+const libraryName = 'openapi2zod'
 
 module.exports = {
   input: `src/${libraryName}.ts`,
   output: [
-    { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
-    { file: pkg.module, format: 'es', sourcemap: true },
+    { 
+      file: pkg.main,
+      format: 'cjs', 
+      exports: "named",
+      sourcemap: false 
+    },
+    { 
+      file: pkg.module,
+      format: 'esm', 
+      exports: "named",
+      sourcemap: false 
+    },
+    { 
+      file: pkg.browser,
+      name: camelCase(libraryName), 
+      format: 'umd', 
+      exports: "named",
+      sourcemap: false 
+    },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: ['zod'],

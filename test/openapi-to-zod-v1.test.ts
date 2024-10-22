@@ -1,6 +1,6 @@
 import { OpenAPIV3 } from 'openapi-types'
 import { z } from 'zod'
-import { parseOpenApiToZod } from '../src/openapi-to-zod' // Adjust the import path accordingly
+import { parseOpenApiToZod } from '../src/openapi2zod' // Adjust the import path accordingly
 import { zodToJsonSchema } from 'zod-to-json-schema'
 import * as openapiJson from './__mocks__/openapi_3_1_0_v1.json'
 

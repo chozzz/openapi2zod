@@ -1,4 +1,4 @@
-import { z, ZodSchema, ZodTypeAny, ZodObject, ZodUnion } from 'zod'
+import { z, ZodSchema, ZodTypeAny } from 'zod'
 import { OpenAPIV3 } from 'openapi-types'
 import { openApiSchemaToZod } from './openapi-schema-to-zod'
 import { flattenZodType } from './utils/flattenZodType'

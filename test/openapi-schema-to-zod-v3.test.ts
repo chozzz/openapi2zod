@@ -1,7 +1,7 @@
 import { z, ZodIntersection, ZodObject, ZodTypeAny, ZodUnion } from 'zod';
 import { OpenAPIV3 } from 'openapi-types';
 import { openApiSchemaToZod } from '../src/openapi-schema-to-zod';
-import { parseOpenApiToZod } from '../src/openapi-to-zod';
+import { parseOpenApiToZod } from '../src/openapi2zod';
 
 describe('openApiSchemaToZod - Array Schema Handling', () => {
   const schemas: Record<string, OpenAPIV3.SchemaObject> = {};

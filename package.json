@@ -1,5 +1,5 @@
 {
-  "name": "@chozzz/openapi-to-zod",
+  "name": "@chozzz/openapi2zod",
   "version": "0.1.0",
   "description": "A utility library that converts OpenAPI JSON schemas into Zod schemas",
   "keywords": [
@@ -8,16 +8,17 @@
     "json-schema",
     "typescript"
   ],
-  "main": "dist/openapi-to-zod.umd.js",
-  "module": "dist/openapi-to-zod.es5.js",
-  "typings": "dist/types/openapi-to-zod.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "browser": "./dist/index.umd.js",
+  "typings": "./dist/types/index.d.ts",
   "files": [
     "dist"
   ],
   "author": "vadi <vadz77@hotmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chozzz/openapi-to-zod"
+    "url": "https://github.com/chozzz/openapi2zod"
   },
   "license": "MIT",
   "engines": {
@@ -45,11 +46,6 @@
       "git add"
     ]
   },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
-  },
   "jest": {
     "transform": {
       ".(ts|tsx)": "ts-jest"
@@ -75,15 +71,6 @@
     },
     "collectCoverageFrom": [
       "src/*.{js,ts}"
-    ]
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
     ]
   },
   "devDependencies": {
@@ -125,5 +112,19 @@
   },
   "peerDependencies": {
     "zod": "^3.23.8"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }
