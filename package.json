@@ -11,7 +11,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
   "browser": "./dist/index.umd.js",
-  "typings": "./dist/types/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist"
   ],
