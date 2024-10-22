@@ -40,7 +40,7 @@ export function parseOpenApiToZod(openApiSchema: OpenAPIV3.Document): Record<str
         ...(operation.parameters || []),
       ] as OpenAPIV3.ParameterObject[]
 
-      const requestBody = operation.requestBody
+      const requestBody = operation.requestBody;
 
       // Collect all parameters and request body properties
       const combinedSchemas: Record<string, ZodTypeAny> = {}
@@ -87,7 +87,7 @@ export function parseOpenApiToZod(openApiSchema: OpenAPIV3.Document): Record<str
         }
       }
 
-      let operationSchema: ZodTypeAny
+      let operationSchema: ZodTypeAny;
 
       if (requestBodySchema) {
         const isParametersSchemaEmpty =
@@ -140,7 +140,12 @@ export function parseOpenApiToZod(openApiSchema: OpenAPIV3.Document): Record<str
       }
 
       // Attach description or summary to operationSchema if available
-      operationSchema = operationSchema.describe(operation.description || operation.summary || '')
+      operationSchema = operationSchema.describe(JSON.stringify({
+        description: operation.description || operation.summary || '',
+        operationId,
+        path,
+        method,
+      }));
 
       // Add the schema to the result
       zodSchemas[operationId] = operationSchema

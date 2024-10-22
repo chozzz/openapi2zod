@@ -23,8 +23,19 @@ describe('parseOpenApiToZod v1', () => {
   })
 
   test('check zod schema contains description in its definition', () => {
-    for (const [operationId, schema] of Object.entries(zodSchemas)) {
-      expect(schema._def.description).toBeDefined()
+    for (const [, schema] of Object.entries(zodSchemas)) {
+      expect(schema._def.description).toBeDefined();
+      
+      // Check if description is a stringified object, which means its a metadata containing the description, operationId, path and method.
+      expect(schema._def.description).toMatch(/^{.*}$/);
+
+      // Check if the description has the required fields
+      const metadata = JSON.parse(schema._def.description || '');
+
+      expect(metadata.description).toBeDefined();
+      expect(metadata.operationId).toBeDefined();
+      expect(metadata.path).toBeDefined();
+      expect(metadata.method).toBeDefined();
     }
   })
 
@@ -207,7 +218,7 @@ describe('parseOpenApiToZod v1', () => {
     }
 
     // Invalid data: missing fileContent
-    const invalidDataMissingFileContent = {
+    const validDataMissingFileContent = {
       fileName: 'document.txt',
     }
 
@@ -219,7 +230,7 @@ describe('parseOpenApiToZod v1', () => {
 
     // Validate parsing
     expect(() => schema.parse(validData)).not.toThrow()
-    expect(() => schema.parse(invalidDataMissingFileContent)).not.toThrow()
+    expect(() => schema.parse(validDataMissingFileContent)).not.toThrow()
     expect(() => schema.parse(invalidDataFileNameNotString)).toThrow()
 
     // Generate JSON schema and snapshot test

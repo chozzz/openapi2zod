@@ -7,7 +7,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DE
   "definitions": {
     "deleteJiraFixVersion": {
       "additionalProperties": false,
-      "description": "Deletes a fix version in Jira by its version ID.",
+      "description": "{"description":"Deletes a fix version in Jira by its version ID.","operationId":"deleteJiraFixVersion","path":"/api/v1/bakabit/functions/deleteJiraFixVersion","method":"delete"}",
       "properties": {
         "versionId": {
           "description": "The ID of the fix version to delete.",
@@ -30,7 +30,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DE
   "definitions": {
     "deleteJiraIssueComment": {
       "additionalProperties": false,
-      "description": "Delete a specific comment from a Jira issue.",
+      "description": "{"description":"Delete a specific comment from a Jira issue.","operationId":"deleteJiraIssueComment","path":"/api/v1/bakabit/functions/deleteJiraIssueComment","method":"delete"}",
       "properties": {
         "commentId": {
           "description": "The ID of the comment to delete.",
@@ -58,7 +58,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "DE
   "definitions": {
     "deleteJiraSprint": {
       "additionalProperties": false,
-      "description": "Deletes a sprint in Jira by its sprint ID.",
+      "description": "{"description":"Deletes a sprint in Jira by its sprint ID.","operationId":"deleteJiraSprint","path":"/api/v1/bakabit/functions/deleteJiraSprint","method":"delete"}",
       "properties": {
         "sprintId": {
           "description": "The ID of the sprint to delete.",
@@ -81,7 +81,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "GE
   "definitions": {
     "createGmailLabelsAndFilters": {
       "additionalProperties": false,
-      "description": "Create labels and filters in Gmail",
+      "description": "{"description":"Create labels and filters in Gmail","operationId":"createGmailLabelsAndFilters","path":"/api/v1/bakabit/functions/createGmailLabelsAndFilters","method":"get"}",
       "properties": {
         "filtersToCreate": {
           "description": "Filters to create",
@@ -105,7 +105,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PA
   "definitions": {
     "updateJiraIssue": {
       "additionalProperties": false,
-      "description": "Update Jira issue details, including custom fields like priority, story points, sprint, etc. Requires \`bodyData\` argument to be provided.",
+      "description": "{"description":"Update Jira issue details, including custom fields like priority, story points, sprint, etc. Requires \`bodyData\` argument to be provided.","operationId":"updateJiraIssue","path":"/api/v1/bakabit/functions/updateJiraIssue","method":"put"}",
       "properties": {
         "bodyData": {
           "description": "The fields to update in the Jira issue as a JSON string.",
@@ -133,7 +133,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PA
   "definitions": {
     "updateJiraIssueComment": {
       "additionalProperties": false,
-      "description": "Update an existing comment on a specific Jira issue.",
+      "description": "{"description":"Update an existing comment on a specific Jira issue.","operationId":"updateJiraIssueComment","path":"/api/v1/bakabit/functions/updateJiraIssueComment","method":"put"}",
       "properties": {
         "commentBody": {
           "description": "The updated content of the comment.",
@@ -166,7 +166,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PA
   "definitions": {
     "updateJiraSprint": {
       "additionalProperties": false,
-      "description": "Updates a sprint in Jira with specified parameters such as sprint ID, name, start date, end date, goal, and state. If sprint ID is not provided, returns a list of available sprints.",
+      "description": "{"description":"Updates a sprint in Jira with specified parameters such as sprint ID, name, start date, end date, goal, and state. If sprint ID is not provided, returns a list of available sprints.","operationId":"updateJiraSprint","path":"/api/v1/bakabit/functions/updateJiraSprint","method":"put"}",
       "properties": {
         "endDate": {
           "description": "The new end date of the sprint in ISO8601 format.",
@@ -206,7 +206,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "description": "Add a comment to a specific Jira issue.",
+  "description": "{"description":"Add a comment to a specific Jira issue.","operationId":"addJiraIssueComment","path":"/api/v1/bakabit/functions/addJiraIssueComment","method":"post"}",
   "properties": {
     "commentBody": {
       "description": "The content of the comment.",
@@ -238,7 +238,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
         "person_id": "404947",
         "service_id": "3173137",
       },
-      "description": "Updates an existing time entry in Productive by sending a POST request to the Productive API v2.",
+      "description": "{"description":"Updates an existing time entry in Productive by sending a POST request to the Productive API v2.","operationId":"addProductiveTimeEntry","path":"/api/v1/bakabit/functions/addProductiveTimeEntry","method":"post"}",
       "properties": {
         "dateString": {
           "default": "today",
@@ -282,7 +282,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "assignJiraIssue": {
       "additionalProperties": false,
-      "description": "Assigns a Jira issue to a specified assignee. If the assignee is not provided, it returns the available assignees for the issue.",
+      "description": "{"description":"Assigns a Jira issue to a specified assignee. If the assignee is not provided, it returns the available assignees for the issue.","operationId":"assignJiraIssue","path":"/api/v1/bakabit/functions/assignJiraIssue","method":"post"}",
       "properties": {
         "assignee": {
           "description": "The account ID or username of the assignee. If not provided, available assignees will be returned.",
@@ -309,7 +309,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
   "definitions": {
     "commentOnGithubIssue": {
       "additionalProperties": false,
-      "description": "Add a comment to an existing issue in a specified GitHub repository.",
+      "description": "{"description":"Add a comment to an existing issue in a specified GitHub repository.","operationId":"commentOnGithubIssue","path":"/api/v1/bakabit/functions/commentOnGithubIssue","method":"post"}",
       "properties": {
         "commentBody": {
           "description": "The content of the comment.",
@@ -351,7 +351,7 @@ exports[`parseOpenApiToZod v1 should generate correct schema for operationId "PO
         "fileContent": "This is a sample content.",
         "fileName": "README.txt",
       },
-      "description": "Creates and uploads a file to Google Drive with a specified filename and content using Google OAuth token.",
+      "description": "{"description":"Creates and uploads a file to Google Drive with a specified filename and content using Google OAuth token.","operationId":"createGoogleDriveFile","path":"/api/v1/bakabit/functions/createGoogleDriveFile","method":"post"}",
       "properties": {
         "fileContent": {
           "default": "This is a sample content.",

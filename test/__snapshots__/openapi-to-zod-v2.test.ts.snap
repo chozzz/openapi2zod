@@ -37,7 +37,7 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "al
           "type": "object",
         },
       ],
-      "description": "This endpoint accepts a request body that must conform to all of the specified schemas.",
+      "description": "{"description":"This endpoint accepts a request body that must conform to all of the specified schemas.","operationId":"allOfExample","path":"/api/v1/example/allOfExample","method":"post"}",
     },
   },
 }
@@ -75,7 +75,7 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "an
           "type": "object",
         },
       ],
-      "description": "This endpoint accepts a request body that can be any combination of the specified schemas.",
+      "description": "{"description":"This endpoint accepts a request body that can be any combination of the specified schemas.","operationId":"anyOfExample","path":"/api/v1/example/anyOfExample","method":"post"}",
     },
   },
 }
@@ -87,7 +87,7 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "no
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "notExample": {
-      "description": "This endpoint accepts a request body that must not conform to a specified schema.",
+      "description": "{"description":"This endpoint accepts a request body that must not conform to a specified schema.","operationId":"notExample","path":"/api/v1/example/notExample","method":"post"}",
     },
   },
 }
@@ -139,7 +139,7 @@ exports[`parseOpenApiToZod v2 should generate correct schema for operationId "on
           "type": "object",
         },
       ],
-      "description": "This endpoint accepts a request body that must conform to one of the specified schemas.",
+      "description": "{"description":"This endpoint accepts a request body that must conform to one of the specified schemas.","operationId":"oneOfExample","path":"/api/v1/example/oneOfExample","method":"post"}",
     },
   },
 }

@@ -1,4 +1,4 @@
-import { z, ZodIntersection, ZodObject, ZodTypeAny, ZodUnion } from 'zod';
+import { z, ZodObject, ZodTypeAny } from 'zod';
 import { OpenAPIV3 } from 'openapi-types';
 import { openApiSchemaToZod } from '../src/openapi-schema-to-zod';
 import { parseOpenApiToZod } from '../src/openapi2zod';
