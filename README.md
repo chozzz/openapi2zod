@@ -72,22 +72,10 @@ Here's an example of how to use `openapi2zod` with Vercel AI to dynamically gene
 
 ```javascript
 'use server';
-import { CoreTool, tool } from 'ai';
-import { unstable_noStore as noStore } from 'next/cache';
+import { ToolSet, tool } from 'ai';
 import { parseOpenApiToZod } from "openapi2zod";
 
-// Define a type for tools with execute defined
-type ExecutableTool = CoreTool<any, any> & {
-  execute: (args: any) => PromiseLike<any>;
-};
-
 export async function generateAIToolByOpenApiUrl(openapiUrl: string, headers?: Record<string, string>) {
-  /**
-   * Deal with nextjs static caching
-   * @see {@link https://github.com/vercel/storage/issues/510}
-   */
-  noStore();
-
   console.log(`[Dynamic Tool Generation] :: Fetching OpenAPI schema from ${openapiUrl}`);
 
   // Fetch OpenAPI schema from the given URL
@@ -100,7 +88,7 @@ export async function generateAIToolByOpenApiUrl(openapiUrl: string, headers?: R
   const zodRecords = parseOpenApiToZod(openapiSchema);
 
   // Output result
-  const result: Record<string, ExecutableTool> = {};
+  const result: ToolSet = {};
 
   for ( const [name, schema] of Object.entries(zodRecords) ) {
     // Current schema description, if defined.
